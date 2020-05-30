@@ -26,7 +26,7 @@ public class CustomerImporter implements CsvImporter<Customer> {
     public List<Customer> fromCsv(final String pathToCsv) throws IOException {
         log.info("Start reading from file {}.", pathToCsv);
         try (final Reader in = new FileReader(pathToCsv)) {
-            Iterable<CSVRecord> records = CSVFormat.DEFAULT
+            final Iterable<CSVRecord> records = CSVFormat.DEFAULT
                     .withHeader(HEADERS)
                     .withFirstRecordAsHeader()
                     .parse(in);

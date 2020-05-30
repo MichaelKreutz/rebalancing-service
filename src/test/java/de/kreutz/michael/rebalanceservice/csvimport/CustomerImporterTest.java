@@ -15,7 +15,7 @@ class CustomerImporterTest {
     @Test
     void importCustomerFromCsvHappyCase() throws IOException {
         final CustomerImporter customerImporter = new CustomerImporter();
-        final String pathToFile = findPathOfResource("/csv/customers.csv");
+        final String pathToFile = TestUtils.findPathOfResource("/csv/customers.csv");
 
         final List<Customer> customers = customerImporter.fromCsv(pathToFile);
 
@@ -46,10 +46,6 @@ class CustomerImporterTest {
 
         assertThatThrownBy(() -> customerImporter.fromCsv(pathToFile))
                 .isInstanceOf(FileNotFoundException.class);
-    }
-
-    private String findPathOfResource(final String resourceName) {
-        return getClass().getResource(resourceName).getPath();
     }
 
 }

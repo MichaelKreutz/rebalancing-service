@@ -6,3 +6,6 @@
 
 ## Assumptions
 * csv files come in correct format and no attributes are missing
+
+## Limits/Potential refactorings
+* Extract common logic in `CustomerImporter` and `StrategyImporter`?
