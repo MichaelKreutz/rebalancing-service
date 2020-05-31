@@ -24,7 +24,7 @@ public class TestUtils {
     public Customer createBob() {
         return Customer.builder()
                 .customerId(1)
-                .dateOfBirth(LocalDate.now().minusYears(51))
+                .dateOfBirth(LocalDate.parse("1961-04-29"))
                 .email("bob@bob.com")
                 .retirementAge(65)
                 .riskLevel(3)

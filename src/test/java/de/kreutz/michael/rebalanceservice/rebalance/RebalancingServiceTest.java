@@ -42,7 +42,7 @@ class RebalancingServiceTest {
     @Test
     void rebalanceToApplicableStrategy() {
         rebalancingService = new RebalancingService(customerImporter, strategyImporter, fpsClient, 1, "pathToCustomers.csv", "pathToStrategy.csv");
-        doReturn(singletonList(TestUtils.createBob())).when(customerImporter).fromCsv(anyString());
+        doReturn(singletonList(TestUtils.createBobClone(1L))).when(customerImporter).fromCsv(anyString());
         doReturn(singletonList(TestUtils.createStrategyForBob())).when(strategyImporter).fromCsv(anyString());
         doReturn(Optional.of(CustomerPortfolio.builder().stocks(550).bonds(50).cash(400).build())).when(fpsClient).getPortfolioOf(1L);
 
@@ -63,7 +63,7 @@ class RebalancingServiceTest {
     @Test
     void noRebalanceIfTargetValueIsAlreadyReached() {
         rebalancingService = new RebalancingService(customerImporter, strategyImporter, fpsClient, 1, "pathToCustomers.csv", "pathToStrategy.csv");
-        doReturn(singletonList(TestUtils.createBob())).when(customerImporter).fromCsv(anyString());
+        doReturn(singletonList(TestUtils.createBobClone(1L))).when(customerImporter).fromCsv(anyString());
         doReturn(singletonList(TestUtils.createStrategyForBob())).when(strategyImporter).fromCsv(anyString());
         doReturn(Optional.of(CustomerPortfolio.builder().build())).when(fpsClient).getPortfolioOf(1L);
 
@@ -79,7 +79,7 @@ class RebalancingServiceTest {
     @Test
     void rebalanceToOnlyCashIfStrategyIsMissing() {
         rebalancingService = new RebalancingService(customerImporter, strategyImporter, fpsClient, 1, "pathToCustomers.csv", "pathToStrategy.csv");
-        doReturn(singletonList(TestUtils.createBob())).when(customerImporter).fromCsv(anyString());
+        doReturn(singletonList(TestUtils.createBobClone(1L))).when(customerImporter).fromCsv(anyString());
         doReturn(singletonList(TestUtils.createFirstStrategy())).when(strategyImporter).fromCsv(anyString());
         doReturn(Optional.of(CustomerPortfolio.builder().stocks(100).bonds(50).cash(30).build())).when(fpsClient).getPortfolioOf(1L);
 
