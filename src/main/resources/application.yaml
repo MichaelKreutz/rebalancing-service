@@ -1,2 +1,6 @@
+csvImport:
+  customer: ${PATH_TO_CUSTOMERS_CSV:/customers.csv}
+  strategy: ${PATH_TO_STRATEGY_CSV:/strategy.csv}
 fps:
-  baseUrl: "http://localhost:8081"
+  baseUrl: ${FPS_BASE_URL:http://localhost:8081}
+  batchSize: ${FPS_BATCH_SIZE:50}
