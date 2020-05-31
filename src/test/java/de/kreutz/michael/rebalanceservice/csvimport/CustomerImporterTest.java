@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,21 +20,9 @@ class CustomerImporterTest {
 
         assertThat(customers).isNotNull();
         assertThat(customers).hasSize(2);
-        final Customer expectedCustomer1 = Customer.builder()
-                .customerId(1)
-                .dateOfBirth(LocalDate.parse("1961-04-29"))
-                .email("bob@bob.com")
-                .retirementAge(65)
-                .riskLevel(3)
-                .build();
+        final Customer expectedCustomer1 = TestUtils.createBob();
         assertThat(customers).contains(expectedCustomer1);
-        final Customer expectedCustomer2 = Customer.builder()
-                .customerId(2)
-                .dateOfBirth(LocalDate.parse("1978-05-01"))
-                .email("sally@gmail.com")
-                .retirementAge(67)
-                .riskLevel(8)
-                .build();
+        final Customer expectedCustomer2 = TestUtils.createSally();
         assertThat(customers).contains(expectedCustomer2);
     }
 
