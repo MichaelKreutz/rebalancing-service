@@ -28,6 +28,10 @@ the application can be started as follows:
 ```
 POST /rebalance
 ```
+which can be requested as follows
+```
+curl -XPOST localhost:8080/rebalance 
+```
 This endpoint returns a `202` and asynchronously executes the portfolio rebalancings, i.e. the following steps:
 * read customers from `customers.csv`
 * read strategies from `strategy.csv`
@@ -39,14 +43,14 @@ If an error occurs during the execution then the program
 * terminates if the error occurs during parsing of csv files
 * continues if the error occurs during the interaction with the FPS
 
-It is safe to reexecute this application if an error encounters.  For errors related to parsing, first the
+It is safe to trigger `/rebalance` again if an error encounters.  For errors related to parsing, first the
 data errors in csv files need to be fixed or the parser needs to be written more flexible. 
 
 ## Design decisions
 * git: single branch strategy as I am working without collaborators
 * git: conventional commits
 * csv import: use dependency `org.apache.commons:commons-csv` to parse csv
-* http client: use reactive http client `WebClient`
+* http client: use reactive http client `WebClient` (non-blocking feature not used currently)
 * resiliency: fail fast on exceptions during csv import
 * resiliency: log errors during http requests to FPS and continue processing
 * resiliency/performance: only do http requests to execute trades if trade contains changes
@@ -59,14 +63,14 @@ must be a zero sum game change. This assumption is based on the fact, that there
 However the example in the challenge does not suggest that it should be zero sum games.. 
 * `customers.csv` conatains pairwise disjoint `customerId` values
 
-## Limits/Potential refactorings
+## Limits/Potential improvements
 * extract common logic in `CustomerImporter` and `StrategyImporter`?
 * implement retry if client requests fail within 5xx range
 * decouple csv import and processing
 * provide scheduled cron job to automate the rebalancing process to exactly once per day 
 * persist customer portfolios of failed calls to FPS `/execute` and retry with a scheduled job
-* publish outcome of processing to an event to some topic after the processing such that a client of `/rebalance` endpoint
+* publish outcome of processing as an event to some topic after the processing such that a client of `/rebalance` endpoint
 can get information  
 * offer API documentation over swagger API
 * dockerize application
-
+* evaluate if application should be done in a more reactive manner
