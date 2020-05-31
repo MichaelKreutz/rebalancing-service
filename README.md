@@ -2,14 +2,8 @@
 
 ## Start service
 For simplicity `rebalancing-service` is run as a SpringBootApplication inside an embedded tomcat.
-It can be started as follows:
-```
-./mvnw clean spring-boot:run
-```
 The application provides the following configuration parameters that can be set as environment variables or
 changed in `application.yaml`:
-
-
 
 |configuration parameter|environment variable|description|default|
 |---|---|---|---|
@@ -18,9 +12,19 @@ changed in `application.yaml`:
 | fps.baseUrl | `FPS_BASE_URL` | base url of FPS | http://localhost:8081|
 | fps.batchSize | `FPS_BATCH_SIZE` | maximum batch size of trades in requests to FPS endpoint `/execute` | 50|
 
+After adjusting the configuration parameters e.g. by providing environment variables
+```
+export PATH_TO_CUSTOMERS_CSV=/tmp/customers.csv
+export PATH_TO_STRATEGY_CSV=/tmp/strategy.csv
+export FPS_BASE_URL=http://localhost:8082
+```
+
+the application can be started as follows:
+```
+./mvnw clean spring-boot:run
+```
 ## API
-`rebalancing-service` offers a minimalistic API allowing to trigger a rebalancing of all customer portfolios.
-This can be triggered by
+`rebalancing-service` offers a minimalistic API allowing to trigger a rebalancing of all customer portfolios:
 ```
 POST /rebalance
 ```
@@ -64,4 +68,5 @@ However the example in the challenge does not suggest that it should be zero sum
 * publish outcome of processing to an event to some topic after the processing such that a client of `/rebalance` endpoint
 can get information  
 * offer API documentation over swagger API
+* dockerize application
 
