@@ -24,10 +24,46 @@ public class TestUtils {
     public Customer createBob() {
         return Customer.builder()
                 .customerId(1)
-                .dateOfBirth(LocalDate.parse("1961-04-29"))
+                .dateOfBirth(LocalDate.now().minusYears(51))
                 .email("bob@bob.com")
                 .retirementAge(65)
                 .riskLevel(3)
+                .build();
+    }
+
+    public Customer createBobClone(final long customerId) {
+        return Customer.builder()
+                .customerId(customerId)
+                .dateOfBirth(LocalDate.now().minusYears(51))
+                .email("bob@bob.com")
+                .retirementAge(65)
+                .riskLevel(3)
+                .build();
+    }
+
+    public Strategy createStrategyForBob() {
+        return Strategy.builder()
+                .strategyId(2)
+                .minRiskLevel(0)
+                .maxRiskLevel(3)
+                .minYearsToRetirement(10)
+                .maxYearsToRetirement(20)
+                .stocksPercentage(10)
+                .cashPercentage(20)
+                .bondsPercentage(70)
+                .build();
+    }
+
+    public Strategy createFirstStrategy() {
+        return Strategy.builder()
+                .strategyId(1)
+                .minRiskLevel(0)
+                .maxRiskLevel(3)
+                .minYearsToRetirement(20)
+                .maxYearsToRetirement(30)
+                .stocksPercentage(20)
+                .cashPercentage(20)
+                .bondsPercentage(60)
                 .build();
     }
 }

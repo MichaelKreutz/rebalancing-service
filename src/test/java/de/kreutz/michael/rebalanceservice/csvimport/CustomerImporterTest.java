@@ -1,9 +1,8 @@
 package de.kreutz.michael.rebalanceservice.csvimport;
 
+import de.kreutz.michael.rebalanceservice.csvimport.exception.CsvFileNotFoundException;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class CustomerImporterTest {
 
     @Test
-    void importCustomerFromCsvHappyCase() throws IOException {
+    void importCustomerFromCsvHappyCase() {
         final CustomerImporter customerImporter = new CustomerImporter();
         final String pathToFile = TestUtils.findPathOfResource("/csv/customers.csv");
 
@@ -32,7 +31,7 @@ class CustomerImporterTest {
         final String pathToFile = "file-does-not-exist";
 
         assertThatThrownBy(() -> customerImporter.fromCsv(pathToFile))
-                .isInstanceOf(FileNotFoundException.class);
+                .isInstanceOf(CsvFileNotFoundException.class);
     }
 
 }

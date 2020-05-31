@@ -1,20 +1,24 @@
 package de.kreutz.michael.rebalanceservice.csvimport;
 
+import de.kreutz.michael.rebalanceservice.csvimport.exception.CsvFileNotFoundException;
+import de.kreutz.michael.rebalanceservice.csvimport.exception.CsvParseException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.String.format;
+
 @Service
 @Slf4j
 public class StrategyImporter implements CsvImporter<Strategy> {
-
 
     private static final String STRATEGY_ID = "strategyId";
     private static final String MIN_RISK_LEVEL = "minRiskLevel";
@@ -28,7 +32,7 @@ public class StrategyImporter implements CsvImporter<Strategy> {
             MAX_YEARS_TO_RETIREMENT, STOCKS_PERCENTAGE, CASH_PERCENTAGE, BONDS_PERCENTAGE};
 
     @Override
-    public List<Strategy> fromCsv(final String pathToCsv) throws IOException {
+    public List<Strategy> fromCsv(final String pathToCsv) {
         log.info("Start reading from file {}.", pathToCsv);
         try (final Reader in = new FileReader(pathToCsv)) {
             final Iterable<CSVRecord> records = CSVFormat.DEFAULT
@@ -51,6 +55,10 @@ public class StrategyImporter implements CsvImporter<Strategy> {
             }
             log.info("Read strategies {} from file.", strategies);
             return strategies;
+        } catch (FileNotFoundException e) {
+            throw new CsvFileNotFoundException(format("File %s not found.", pathToCsv), e);
+        } catch (IOException e) {
+            throw new CsvParseException(format("Failed to parse file %s.", pathToCsv), e);
         }
     }
 }

@@ -2,7 +2,6 @@ package de.kreutz.michael.rebalanceservice.csvimport;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class StrategyImporterTest {
 
     @Test
-    void importStrategyFromCsvHappyCase() throws IOException {
+    void importStrategyFromCsvHappyCase() {
         final StrategyImporter strategyImporter = new StrategyImporter();
         final String pathToFile = TestUtils.findPathOfResource("/csv/strategy.csv");
 
@@ -18,16 +17,8 @@ class StrategyImporterTest {
 
         assertThat(strategies).isNotNull();
         assertThat(strategies).hasSize(3);
-        final Strategy expectedStrategy1 = Strategy.builder()
-                .strategyId(1)
-                .minRiskLevel(0)
-                .maxRiskLevel(3)
-                .minYearsToRetirement(20)
-                .maxYearsToRetirement(30)
-                .stocksPercentage(20)
-                .cashPercentage(20)
-                .bondsPercentage(60)
-                .build();
+        final Strategy expectedStrategy1 = TestUtils.createFirstStrategy();
         assertThat(strategies).contains(expectedStrategy1);
     }
+
 }
