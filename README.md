@@ -4,6 +4,10 @@
 * git: single branch strategy as I am working without collaborators
 * git: conventional commits
 * csv import: use dependency `org.apache.commons:commons-csv` to parse csv
+* http client: use reactive http client `WebClient`
+* resiliency: fail fast on exceptions during csv import
+* resiliency: log errors during http requests to fps and continue processing
+* resiliency: only do http requests to execute trades if trade contains changes
 
 ## Assumptions
 * csv files come in correct format and no attributes are missing
