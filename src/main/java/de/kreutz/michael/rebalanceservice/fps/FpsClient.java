@@ -24,7 +24,7 @@ public class FpsClient {
     }
 
     public Optional<CustomerPortfolio> getPortfolioOf(final long customerId) {
-
+        log.info("Get portfolio of customer with id {}.", customerId);
         try {
             final CustomerPortfolio customerPortfolio = webClient.get()
                     .uri("/customer/{customerId}", customerId).accept(MediaType.APPLICATION_JSON)
@@ -39,6 +39,7 @@ public class FpsClient {
     }
 
     public void execute(final List<CustomerPortfolio> batchOfTrades) {
+        log.info("Execute trades {}.", batchOfTrades);
         try {
             webClient.post()
                     .uri("/execute")
@@ -46,6 +47,7 @@ public class FpsClient {
                     .retrieve()
                     .bodyToMono(Void.class)
                     .block();
+            log.info("Successfully executed batch of trades {}.", batchOfTrades);
         } catch (WebClientResponseException e) {
             log.error("Failed to execute batch of trades {} due to: ", batchOfTrades, e);
         }
