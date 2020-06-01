@@ -98,6 +98,27 @@ class RebalancingServiceTest {
     }
 
     @Test
+    void rebalanceToMoreCashIfTargetValuesNotReachable() {
+        rebalancingService = new RebalancingService(customerImporter, strategyImporter, fpsClient, 1, "pathToCustomers.csv", "pathToStrategy.csv");
+        doReturn(singletonList(TestUtils.createBobClone(1L))).when(customerImporter).fromCsv(anyString());
+        doReturn(singletonList(TestUtils.createStrategyForBob())).when(strategyImporter).fromCsv(anyString());
+        doReturn(Optional.of(CustomerPortfolio.builder().stocks(3).bonds(3).cash(3).build())).when(fpsClient).getPortfolioOf(1L);
+
+        rebalancingService.rebalance();
+
+        ArgumentCaptor<List<CustomerPortfolio>> tradesCaptor = ArgumentCaptor.forClass(List.class);
+        verify(customerImporter).fromCsv(anyString());
+        verify(strategyImporter).fromCsv(anyString());
+        verify(fpsClient).execute(tradesCaptor.capture());
+        verify(fpsClient).getPortfolioOf(any(Long.class));
+        verifyNoMoreInteractions(customerImporter, strategyImporter, fpsClient);
+        final List<CustomerPortfolio> trades = tradesCaptor.getValue();
+        assertThat(trades).hasSize(1);
+        final CustomerPortfolio expectedTrade = CustomerPortfolio.builder().stocks(-3).bonds(3).cash(0).build();
+        assertThat(trades.get(0)).isEqualTo(expectedTrade);
+    }
+
+    @Test
     void partitionTradesIntoBatches() {
         rebalancingService = new RebalancingService(customerImporter, strategyImporter, fpsClient, 3, "pathToCustomers.csv", "pathToStrategy.csv");
         final List<Customer> customers = IntStream.range(0, 10).mapToObj(TestUtils::createBobClone).collect(Collectors.toList());

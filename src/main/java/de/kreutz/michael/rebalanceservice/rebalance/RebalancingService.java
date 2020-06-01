@@ -89,8 +89,8 @@ public class RebalancingService {
     private CustomerPortfolio calcRebalancing(final CustomerPortfolio customerPortfolio, final Strategy strategy) {
         final long totalValue = customerPortfolio.calcTotalValue();
         final long targetBonds = calcTargetValue(totalValue, strategy.getBondsPercentage());
-        final long targetCash = calcTargetValue(totalValue, strategy.getCashPercentage());
         final long targetStocks = calcTargetValue(totalValue, strategy.getStocksPercentage());
+        final long targetCash = calcTargetCash(totalValue, targetBonds, targetStocks);
         return CustomerPortfolio.builder()
                 .customerId(customerPortfolio.getCustomerId())
                 .bonds(targetBonds - customerPortfolio.getBonds())
@@ -98,6 +98,10 @@ public class RebalancingService {
                 .stocks(targetStocks - customerPortfolio.getStocks())
                 .build();
 
+    }
+
+    private long calcTargetCash(long totalValue, long targetBonds, long targetStocks) {
+        return totalValue - targetBonds - targetStocks;
     }
 
     private long calcTargetValue(long totalValue, int percentage) {

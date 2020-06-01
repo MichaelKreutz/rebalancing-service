@@ -62,6 +62,9 @@ data errors in csv files need to be fixed or the parser needs to be written more
 must be a zero sum game change. This assumption is based on the fact, that there are no prices for bonds and stocks. 
 However the example in the challenge does not suggest that it should be zero sum games.. 
 * `customers.csv` conatains pairwise disjoint `customerId` values
+* portfolio values are integers
+* if percentage of strategy cannot be realized as an integer, then round down stocks and bonds and determine 
+cash such that the result is a zero sum game.
 
 ## Limits/Potential improvements
 * extract common logic in `CustomerImporter` and `StrategyImporter`?
